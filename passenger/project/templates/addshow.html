@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-4">
+        <h4 class="text-center alert alert-info">Add Passenger</h4>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ fm.as_p }}
+            <input type="submit" class="btn btn-success" value="Submit">
+        </form>
+    </div>
+    <div class="col-sm-7 offset-1">
+        <h4 class="text-center alert alert-info">List of Passengers</h4>
+        {% if ps %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Boarding</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Edit/Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in ps %}
+                        <tr>
+                            <th scope="row">{{ p.id }}</th>
+                            <td>{{ p.name }}</td>
+                            <td>{{ p.age }}</td>
+                            <td>{{ p.gender }}</td>
+                            <td>{{ p.boarding }}</td>
+                            <td>{{ p.destination }}</td>
+                            <td>
+                                <a href="{% url 'editdata' p.id%}" class="btn btn-warning btm-sm">Edit</a>
+                                <form action="{% url 'deletedata' p.id %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-danger" value="Delete">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h4 class="text-center alert alert-danger">No records</h4>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
